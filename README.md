@@ -9,17 +9,19 @@
 > 2. Store Email in `*.eml` format.
 > 3. Friendly user interface and good interactive user experience.
 
-## 1. Project Structure
+## Project Structure
 
 ```
 
 ```
 
-## 2. How to Run this project
+## How to Run this project
 
-Execute `./pop3-client` to start!
+1. Install `cmake 3.0.0` or higher version
+2. Execute `cmake --build build` to build
+3. Run `./build/pop3-client` to start client application, enjoy!
 
-## 3. Function Requirements
+## Function Requirements
 
 #### Basic
 

@@ -1,0 +1,3 @@
+// the configured options and settings for Tutorial
+#define POP3_VERSION_MAJOR @pop3-client_VERSION_MAJOR@
+#define POP3_VERSION_MINOR @pop3-client_VERSION_MINOR@
