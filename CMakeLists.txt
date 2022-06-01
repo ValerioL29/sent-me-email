@@ -14,10 +14,13 @@ enable_testing()
 
 # add the MathFunctions library
 add_subdirectory(MathFunctions)
+# add Base 64 library
+add_subdirectory(Base64Codec)
 
 add_executable(pop3-client main.cpp)
 
 target_link_libraries(pop3-client PUBLIC MathFunctions)
+target_link_libraries(pop3-client PUBLIC Base64Codec)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
@@ -26,5 +29,6 @@ include(CPack)
 # add the binary tree to the search path for include files
 target_include_directories(pop3-client PUBLIC
     "${PROJECT_BINARY_DIR}"
+    "${PROJECT_SOURCE_DIR}/Base64Codec"
     "${PROJECT_SOURCE_DIR}/MathFunctions"
 )
