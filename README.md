@@ -1,37 +1,37 @@
 # SentMeEmail
 
-#### 介绍
+#### 0. Introduction
 📨 - A POP3 email application in C/C++.
 
-#### 软件架构
-软件架构说明
+> Goals -
+>
+> 1. Receive Email from pop3 server.
+> 2. Store Email in `*.eml` format.
+> 3. Friendly user interface and good interactive user experience.
 
+## 1. Project Structure
 
-#### 安装教程
+```
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+```
 
-#### 使用说明
+## 2. How to Run this project
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+Execute `./pop3-client` to start!
 
-#### 参与贡献
+## 3. Function Requirements
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+#### Basic
 
+- [ ] Connect POP3 server on port ***110***
+- [ ] Guide user to login and show information about their mails
+- [ ] Display prompt characters such as `mypop >`
+- [ ] Can display content of mails in terminal
+- [ ] The communication procedure can be captured by Wireshark
 
-#### 特技
+#### Advanced
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+- [ ] Login with implicit password (replace your password by `****`)
+- [ ] Can download mails and save them only on local machine  (remove from remote server)
+- [ ] Provide function "Display by subject"
+- [ ] Provide function "Search text in all mails"
