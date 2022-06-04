@@ -3,26 +3,12 @@
 #include <string>
 
 #include "Config.h"
-#include "MathFunctions.h"
 #include "Base64Codec.h"
+#include "Authentication.h"
+#include "CLI.h"
 
-int main(int argc, char *argv[]) {
-    if (argc < 2) {        // report version
-        std::cout << argv[0] << " Version " << POP3_VERSION_MAJOR << "."
-                  << POP3_VERSION_MINOR << std::endl;
-        std::cout << "Usage: " << argv[0] << " number" << std::endl;
-        return 1;
-    }
-
-    // convert input to double
-    const double inputValue = std::stod(argv[1]);
-
-    // calculate square root
-    const double outputValue = mysqrt(inputValue);
-    std::cout << "The square root of " << inputValue << " is " << outputValue
-              << std::endl;
-
-    // Codec testings
+void base64CodecTesting(){
+      // Codec testings
 
     bool all_tests_passed = true;
     
@@ -45,6 +31,22 @@ int main(int argc, char *argv[]) {
     std::cout << "encoded:   " << rest0_encoded << std::endl;
     std::cout << "reference: " << rest0_reference << std::endl;
     std::cout << "decoded:   " << rest0_decoded << std::endl << std::endl;
+
+    return;
+}
+
+int main(int argc, char *argv[]) {
+    if (argc < 2) {        // report version
+        std::cout << argv[0] << " Version " << POP3_VERSION_MAJOR << "."
+                  << POP3_VERSION_MINOR << std::endl;
+        std::cout << "Usage: " << argv[0] << " number" << std::endl;
+        return 1;
+    }
+
+    // Enter cli application
+    mainEntry();
+
+    std::cout << "[INFO] Goodbye!" << std::endl;
 
     return 0;
 }

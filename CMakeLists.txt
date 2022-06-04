@@ -12,15 +12,18 @@ configure_file(Config.h.in Config.h)
 include(CTest)
 enable_testing()
 
-# add the MathFunctions library
-add_subdirectory(MathFunctions)
 # add Base 64 library
 add_subdirectory(Base64Codec)
+# add CLI library
+add_subdirectory(CLI)
+# add Authentication library
+add_subdirectory(Authentication)
 
 add_executable(pop3-client main.cpp)
 
-target_link_libraries(pop3-client PUBLIC MathFunctions)
 target_link_libraries(pop3-client PUBLIC Base64Codec)
+target_link_libraries(pop3-client PUBLIC CLI)
+target_link_libraries(pop3-client PUBLIC Authentication)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
@@ -30,5 +33,6 @@ include(CPack)
 target_include_directories(pop3-client PUBLIC
     "${PROJECT_BINARY_DIR}"
     "${PROJECT_SOURCE_DIR}/Base64Codec"
-    "${PROJECT_SOURCE_DIR}/MathFunctions"
+    "${PROJECT_SOURCE_DIR}/CLI"
+    "${PROJECT_SOURCE_DIR}/Authentication"
 )
