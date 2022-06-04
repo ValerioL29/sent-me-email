@@ -1,34 +1,10 @@
 #include <iostream>
+#include <vector>
 
 #include "CLI.h"
 
-std::string username = "default";
-std::string password = "default";
-
-std::string beforeAuth = 
-    "---------------- Welcome! ----------------\n"
-    "This is a simple POP3 client application.\n"
-    "------------------------------------------\n"
-    "Please enter an option number to continue -\n"
-    "1. Sign In\n"
-    "2. Sign Up\n"
-    "3. Exit"
-;
-
-std::string afterAuth = 
-    "--------------- Send Me Email ---------------\n"
-    "----\tUser: " + username + "\t----\n"
-    "---------------------------------------------\n"
-    "Please enter an option number to continue -\n"
-    "1. Get a list of messages and sizes\n"
-    "2. Get mail statuses\n"
-    "3. Display mail in detail\n"
-    "4. Search text in all mails\n"
-    "5. Display by subjects\n"
-    "6. Download mails in the remote service\n"
-    "7. Delete mails in the remote service\n"
-    "8. Quit"
-;
+std::string username = "";
+std::string password = "";
 
 /**
  * @brief SignUp / SignIn process.
@@ -50,7 +26,7 @@ int userAuth(){
  * @return int 
  */
 int getListOfInfo(){
-    std::cout << "[INFO] Fetching emails' information" << std::endl;
+    std::cout << "[INFO] Fetching email information\n" << std::endl;
     return 1;
 };
 /**
@@ -58,37 +34,73 @@ int getListOfInfo(){
  * 
  * @return int 
  */
-int getEmailStatuses();
+int getEmailStatuses(){
+    std::cout << "[INFO] Fetching email statuses..." << std::endl;
+    std::cout << "[INFO] Getting email statuses completed.\n" << std::endl;
+    return 1;
+}
 /**
  * @brief Display mail in detail
  * 
  * @return int 
  */
-int displayMailInDetail();
+int displayMailInDetail(){
+    std::cout << "[INFO] Loading target email..." << std::endl;
+    std::cout << "[INFO] Details printing completed.\n" << std::endl;
+    return 1;
+}
 /**
  * @brief Search text in all mails
  * 
+ * @param pattern Target pattern
  * @return int 
  */
-int searchTextInAll();
+int searchTextInAll(std::string &pattern){
+    std::vector<std::string> res;
+
+    std::cout << "[INFO] Your target text pattern is: " << pattern << std::endl;
+
+    // Searching process
+    res.push_back("test1.eml");
+    res.push_back("test2.eml");
+
+    // Display results
+    std::cout << "[INFO] Following mails contain target pattern:" << std::endl;
+    for(int i = 1; i <= res.size(); i++) printf("%d %s\n", i, res[i - 1].c_str());
+    
+    std::cout << "[INFO] Pattern matching completed.\n";
+    return 1;
+}
 /**
  * @brief Display by subjects
  * 
  * @return int 
  */
-int displayBySubjects();
+int displayBySubjects(){
+    std::cout << "[INFO] Fetching targets by subjects" << std::endl;
+    std::cout << "[INFO] Display emails by subjects completed.\n" << std::endl;
+    return 1;
+}
 /**
  * @brief Dowload a mail in the remote service
  * 
  * @return int 
  */
-int downloadInRemote();
+int downloadInRemote(){
+    std::cout << "[INFO] Download emails from remote server..." << std::endl;
+    std::cout << "[INFO] Download completed.\n" << std::endl;
+    return 1;
+}
 /**
  * @brief Delete a mail in the remote service
  * 
  * @return int 
  */
-int deleteInRemote();
+int deleteInRemote(){
+    std::cout << "[INFO] Delete emails from remote server..." << std::endl;
+    std::cout << "[INFO] Delete completed.\n" << std::endl;
+    return 1;
+}
 /**
  * @brief After being authorized, loop menu.
  * 
@@ -96,6 +108,7 @@ int deleteInRemote();
 void mainMenu(){
     bool status = true;
     int ret = 0;
+    std::string pattern;
 
     std::cout << afterAuth << std::endl;
 
@@ -113,21 +126,36 @@ void mainMenu(){
                 break;
             // "2. Get mail statuses\n"
             case 2:
+                ret = getEmailStatuses();
+                if(!ret) std::cout << "[ERROR] Get emails' statuses failed." << std::endl;
                 break;
             // "3. Display mail in detail\n"
             case 3:
+                ret = displayMailInDetail();
+                if(!ret) std::cout << "[ERROR] Display emails in detail failed." << std::endl;
                 break;
             // "4. Search text in all mails\n"
             case 4:
+                std::cout << "[INFO] Please enter a text pattern: ";
+                std::cin >> pattern;
+
+                ret = searchTextInAll(pattern);
+                if(!ret) std::cout << "[ERROR] Search text failed." << std::endl;
                 break;
             // "5. Display by subjects\n"
             case 5:
+                ret = displayBySubjects();
+                if(!ret) std::cout << "[ERROR] Display emails in subjects failed." << std::endl;
                 break;
             // "6. Download mails in the remote service\n"
             case 6:
+                ret = downloadInRemote();
+                if(!ret) std::cout << "[ERROR] Downloading emails in remote failed." << std::endl;
                 break;
             // "7. Delete mails in the remote service\n"
             case 7:
+                ret = deleteInRemote();
+                if(!ret) std::cout << "[ERROR] Deleting emails in remote failed." << std::endl;
                 break;
             // "8. Quit"
             case 8:
