@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(pop3-client VERSION 0.1.0)
+project(pop3-client VERSION 0.4.0)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 11)
@@ -20,6 +20,8 @@ add_subdirectory(lib/CLI)
 add_subdirectory(lib/Socket)
 # add Error library
 add_subdirectory(lib/Error)
+# add Pop3Session library
+add_subdirectory(lib/Pop3Session)
 
 add_executable(pop3-client main.cpp)
 
@@ -27,6 +29,7 @@ target_link_libraries(pop3-client PUBLIC Base64Codec)
 target_link_libraries(pop3-client PUBLIC CLI)
 target_link_libraries(pop3-client PUBLIC Socket)
 target_link_libraries(pop3-client PUBLIC Error)
+target_link_libraries(pop3-client PUBLIC Pop3Session)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
@@ -39,4 +42,5 @@ target_include_directories(pop3-client PUBLIC
     "${PROJECT_SOURCE_DIR}/lib/CLI"
     "${PROJECT_SOURCE_DIR}/lib/Socket"
     "${PROJECT_SOURCE_DIR}/lib/Error"
+    "${PROJECT_SOURCE_DIR}/lib/Pop3Session"
 )
