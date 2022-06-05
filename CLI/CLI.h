@@ -4,12 +4,11 @@ const std::string beforeAuth =
     "------------------------------------------\n"
     "Please enter an option number to continue -\n"
     "1. Sign In\n"
-    "2. Sign Up\n"
-    "3. Exit"
+    "2. Exit"
 ;
 
 const std::string afterAuth = 
-    "--------------- Send Me Email ---------------\n"
+    "---------------------------------------------\n"
     "Please enter an option number to continue -\n"
     "1. Get a list of messages and sizes\n"
     "2. Get mail statuses\n"

@@ -12,12 +12,16 @@ std::string password = "";
  * @return int 
  */
 int userAuth(){
-    std::cout << "[INFO] Your username is >> ";
+    std::cout << "[INFO] Please enter your username. (e.g. pop3.163.com)" << std::endl;
+    std::cout << "mypop >> ";
     std::cin >> username;
-    std::cout << "[INFO] Your password is >> ";
+    std::cout << "[INFO] Please enter your password." << std::endl;
+    std::cout << "mypop >> ";
     std::cin >> password;
 
-    if(password.length() > 9) return -1;
+    // Test availability
+
+    if(password.length() == 0 || username.length() == 0) return -1;
     return 1;
 }
 /**
@@ -110,6 +114,8 @@ void mainMenu(){
     int ret = 0;
     std::string pattern;
 
+    std::cout << "--------------- Send Me Email ---------------" << std::endl;
+    std::cout << "----------  Username: " << username << "  ---------" << std::endl;
     std::cout << afterAuth << std::endl;
 
     for(;;){
@@ -196,13 +202,8 @@ void mainEntry(){
                     status = false;
                 }
                 break;
-            // 2. Sign up
+            // 2. Exit
             case 2:
-                // display after signing in info
-                std::cout << "[INFO] Sign up process!" << std::endl;
-                break;
-            // 3. Exit
-            case 3:
                 std::cout << "[INFO] Exit code" << std::endl;
                 status = false;
                 break;
