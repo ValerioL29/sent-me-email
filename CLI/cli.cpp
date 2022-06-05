@@ -68,7 +68,7 @@ int searchTextInAll(std::string &pattern){
     std::cout << "[INFO] Following mails contain target pattern:" << std::endl;
     for(int i = 1; i <= res.size(); i++) printf("%d %s\n", i, res[i - 1].c_str());
     
-    std::cout << "[INFO] Pattern matching completed.\n";
+    std::cout << "[INFO] Pattern matching completed.\n" << std::endl;
     return 1;
 }
 /**
