@@ -4,7 +4,6 @@
 
 #include "Config.h"
 #include "Base64Codec.h"
-#include "Authentication.h"
 #include "CLI.h"
 
 void base64CodecTesting(){
