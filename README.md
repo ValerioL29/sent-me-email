@@ -12,7 +12,37 @@
 ## Project Structure
 
 ```
-
+Sent Me Email
+├── CMakeLists.txt
+├── Config.h.in
+├── README.md
+├── build
+│   └── pop3-client
+├── lib
+│   ├── Base64Codec
+│   │   ├── Base64Codec.h
+│   │   ├── CMakeLists.txt
+│   │   └── base64.cpp
+│   ├── CLI
+│   │   ├── CLI.h
+│   │   ├── CMakeLists.txt
+│   │   └── cli.cpp
+│   ├── Error
+│   │   ├── CMakeLists.txt
+│   │   ├── Error.h
+│   │   └── error.cpp
+│   ├── Pop3Session
+│   │   ├── CMakeLists.txt
+│   │   ├── Pop3Session.h
+│   │   └── pop3session.cpp
+│   ├── Socket
+│   │   ├── CMakeLists.txt
+│   │   ├── Socket.h
+│   │   └── socket.cpp
+│   └── config.h
+├── main.cpp
+└── resources
+    └── test.eml
 ```
 
 ## How to Run this project
