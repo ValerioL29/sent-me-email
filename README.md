@@ -55,10 +55,10 @@ Sent Me Email
 
 #### Basic
 
-- [ ] Connect POP3 server on port ***110***
-- [ ] Guide user to login and show information about their mails
-- [ ] Display prompt characters such as `mypop >`
-- [ ] Can display content of mails in terminal
+- [x] Connect POP3 server on port ***110***
+- [x] Guide user to login and show information about their mails
+- [x] Display prompt characters such as `mypop >`
+- [x] Can display content of mails in terminal
 - [ ] The communication procedure can be captured by Wireshark
 
 #### Advanced
