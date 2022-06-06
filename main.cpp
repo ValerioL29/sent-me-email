@@ -40,6 +40,7 @@ const std::string afterAuth =
     "8. Quit"
 ;
 
+std::string hostname = "";
 std::string username = "";
 std::string password = "";
 
@@ -192,7 +193,10 @@ void mainEntry(){
             // 1. Sign in
             case 1:
                 std::cout << "[INFO] User authentication Entry" << std::endl;
-                std::cout << "[INFO] Please enter your username. (e.g. pop3.163.com)" << std::endl;
+                std::cout << "[INFO] Please enter your hostname. (e.g. pop3.163.com)" << std::endl;
+                std::cout << "mypop >> ";
+                std::cin >> hostname;
+                std::cout << "[INFO] Please enter your username. (e.g. test02122010)" << std::endl;
                 std::cout << "mypop >> ";
                 std::cin >> username;
                 std::cout << "[INFO] Please enter your password." << std::endl;
@@ -202,7 +206,7 @@ void mainEntry(){
                 /* Process user's request. */
                 try
                 {
-                    Pop3Session pop3(username, __DEFAULT_PORT);
+                    Pop3Session pop3(hostname, __DEFAULT_PORT);
                     res = pop3.authenticate(username, password);
 
                     // password.clear(); // Remove password from memory
