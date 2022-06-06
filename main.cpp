@@ -30,6 +30,7 @@ const std::string beforeAuth =
 const std::string afterAuth = 
     "---------------------------------------------\n"
     "Please enter an option number to continue -\n"
+    "0. Help\n"
     "1. Get a list of messages and sizes\n"
     "2. Get mail statuses\n"
     "3. Display mail in detail\n"
@@ -37,7 +38,8 @@ const std::string afterAuth =
     "5. Display by subjects\n"
     "6. Download mails in the remote service\n"
     "7. Delete mails in the remote service\n"
-    "8. Quit"
+    "8. Clear screen\n"
+    "9. Quit"
 ;
 
 std::string hostname = "";
@@ -49,22 +51,40 @@ std::string password = "";
  * 
  */
 void getListOfInfo(){
-    std::cout << "[INFO] Fetching email information\n" << std::endl;
-};
+    std::cout << "[INFO] Fetching email information" << std::endl;
+
+    Pop3Session pop3(hostname, __DEFAULT_PORT);
+    pop3.authenticate(username, password);
+    pop3.printMessageList();
+
+    std::cout << "[INFO] LIST completed.\n" << std::endl;
+}
 /**
  * @brief Get Emails' Statuses
  * 
  */
 void getEmailStatuses(){
     std::cout << "[INFO] Fetching email statuses..." << std::endl;
+
+    Pop3Session pop3(hostname, __DEFAULT_PORT);
+    pop3.authenticate(username, password);
+    pop3.printStatuses();
+
     std::cout << "[INFO] Getting email statuses completed.\n" << std::endl;
 }
+
 /**
  * @brief Display mail in detail
  * 
+ * @param messageId Target message id
  */
-void displayMailInDetail(){
+void displayMailInDetail(int messageId){
     std::cout << "[INFO] Loading target email..." << std::endl;
+
+    Pop3Session pop3(hostname, __DEFAULT_PORT);
+    pop3.authenticate(username, password);
+    pop3.printMessage(messageId);
+
     std::cout << "[INFO] Details printing completed.\n" << std::endl;
 }
 /**
@@ -118,10 +138,11 @@ void deleteInRemote(){
 void mainMenu(){
     bool status = true;
     int ret = 0;
+    int messageId;
     std::string pattern;
 
     std::cout << "--------------- Send Me Email ---------------" << std::endl;
-    std::cout << "----------  Username: " << username << "  ---------" << std::endl;
+    std::cout << "-----------  Username: " << username << "  -----------" << std::endl;
     std::cout << afterAuth << std::endl;
 
     for(;;){
@@ -131,6 +152,13 @@ void mainMenu(){
         std::cin >> option;
 
         switch(option){
+            // "0. Help"
+            case 0:
+                system("cls");
+                std::cout << "--------------- Send Me Email ---------------" << std::endl;
+                std::cout << "-----------  Username: " << username << "  -----------" << std::endl;
+                std::cout << afterAuth << std::endl;
+                break;
             // "1. Get a list of messages and sizes\n"
             case 1:
                 getListOfInfo();
@@ -141,7 +169,9 @@ void mainMenu(){
                 break;
             // "3. Display mail in detail\n"
             case 3:
-                displayMailInDetail();
+                std::cout << "[INFO] Please enter target message id: ";
+                std::cin >> messageId;
+                displayMailInDetail(messageId);
                 break;
             // "4. Search text in all mails\n"
             case 4:
@@ -162,8 +192,12 @@ void mainMenu(){
             case 7:
                 deleteInRemote();
                 break;
-            // "8. Quit"
+            // "8. Clear Screen"
             case 8:
+                system("cls");
+                break;
+            // "9. Quit"
+            case 9:
                 status = false;
                 break;
             default:
@@ -238,34 +272,6 @@ void mainEntry(){
     }
 
     std::cout << "[INFO] Gracefully shutting down POP3 client..." << std::endl;
-
-    return;
-}
-
-void base64CodecTesting(){
-      // Codec testings
-
-    bool all_tests_passed = true;
-    
-    std::string rest0_original = "abc";
-    std::string rest0_reference = "YWJj";
-
-    std::string rest0_encoded = base64_encode(reinterpret_cast<const unsigned char*>(rest0_original.c_str()),
-      rest0_original.length());
-    std::string rest0_decoded = base64_decode(rest0_encoded);
-
-    if (rest0_decoded != rest0_original) {
-      std::cout << "rest0_decoded != rest0_original" << std::endl;
-      all_tests_passed = false;
-    }
-    if (rest0_reference != rest0_encoded) {
-      std::cout << "rest0_reference != rest0_encoded" << std::endl;
-      all_tests_passed = false;
-    }
-
-    std::cout << "encoded:   " << rest0_encoded << std::endl;
-    std::cout << "reference: " << rest0_reference << std::endl;
-    std::cout << "decoded:   " << rest0_decoded << std::endl << std::endl;
 
     return;
 }

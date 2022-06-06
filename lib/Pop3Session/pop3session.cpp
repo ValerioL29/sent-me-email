@@ -6,13 +6,40 @@
  * 
  */
 
-#include "Pop3Session.h"
-
 #include <iostream>
 #include <sstream>
 
+#include "Pop3Session.h"
 #include "Socket.h"
 #include "Base64Codec.h"
+
+// void base64CodecTesting(){
+//       // Codec testings
+
+//     bool all_tests_passed = true;
+    
+//     std::string rest0_original = "abc";
+//     std::string rest0_reference = "YWJj";
+
+//     std::string rest0_encoded = base64_encode(reinterpret_cast<const unsigned char*>(rest0_original.c_str()),
+//       rest0_original.length());
+//     std::string rest0_decoded = base64_decode(rest0_encoded);
+
+//     if (rest0_decoded != rest0_original) {
+//       std::cout << "rest0_decoded != rest0_original" << std::endl;
+//       all_tests_passed = false;
+//     }
+//     if (rest0_reference != rest0_encoded) {
+//       std::cout << "rest0_reference != rest0_encoded" << std::endl;
+//       all_tests_passed = false;
+//     }
+
+//     std::cout << "encoded:   " << rest0_encoded << std::endl;
+//     std::cout << "reference: " << rest0_reference << std::endl;
+//     std::cout << "decoded:   " << rest0_decoded << std::endl << std::endl;
+
+//     return;
+// }
 
 Pop3Session::Pop3Session()
     : socket(NULL)
@@ -151,14 +178,27 @@ void Pop3Session::printMessageList()
         std::cout << "No messages available on the server." << std::endl;
     }
 
-    int spacePosition = 0;
-    for (std::list<std::string>::iterator line = response.data.begin();
-         line != response.data.end();
-         line++)
+    for(std::list<std::string>::iterator line = response.data.begin();
+        line != response.data.end();
+        line++)
     {
-        spacePosition = line->find(' ');
-        std::cout << line->substr(0, spacePosition) << std::endl;
+        std::cout << *line << std::endl;
     }
+}
+
+void Pop3Session::printStatuses()
+{
+    ServerResponse response;
+
+    sendCommand("STAT");
+
+    getResponse(&response);
+    if (!response.status)
+    {
+        throw ServerError("Unable to retrieve email statuses", response.statusMessage);
+    }
+
+    std::cout << response.statusMessage << std::endl;
 }
 
 void Pop3Session::printMessage(int messageId)

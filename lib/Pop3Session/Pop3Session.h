@@ -57,6 +57,13 @@ class Pop3Session
         void printMessageList();
 
         /**
+         * @brief Print email statuses.
+         * 
+         * @return void
+         */
+        void printStatuses();
+
+        /**
          * @brief Print message by it's ID.
          *
          *  This method downloads and prints a message specified
