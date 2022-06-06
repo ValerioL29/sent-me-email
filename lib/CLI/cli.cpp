@@ -2,6 +2,8 @@
 #include <vector>
 
 #include "CLI.h"
+#include "Pop3Session.h"
+#include "Base64Codec.h"
 
 std::string username = "";
 std::string password = "";

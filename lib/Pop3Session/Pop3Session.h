@@ -1,7 +1,7 @@
 /**
  * @brief Client part of POP3 Session
  *
- * @file pop3session.h
+ * @file Pop3Session.h
  * @author Jiacheng Li (cheng2029@foxmail.com)
  * 
  */

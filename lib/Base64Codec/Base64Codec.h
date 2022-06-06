@@ -1,7 +1,10 @@
-//
-//  base64 encoding and decoding with C++.
-//  Version: 2.rc.08 (release candidate)
-//
+/**
+ * @brief base64 encoding and decoding with C++.
+ *
+ * @file Base64Codec.h
+ * @author Jiacheng Li (cheng2029@foxmail.com)
+ * 
+ */
 
 #ifndef BASE64_H_C0CE2A47_D10E_42C9_A27C_C883944E704A
 #define BASE64_H_C0CE2A47_D10E_42C9_A27C_C883944E704A

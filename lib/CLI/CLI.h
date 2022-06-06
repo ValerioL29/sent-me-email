@@ -1,3 +1,11 @@
+/**
+ * @brief CLI part for the client
+ *
+ * @file CLI.h
+ * @author Jiacheng Li (cheng2029@foxmail.com)
+ * 
+ */
+
 const std::string beforeAuth = 
     "---------------- Welcome! ----------------\n"
     "This is a simple POP3 client application.\n"
