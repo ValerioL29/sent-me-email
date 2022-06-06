@@ -1,5 +1,5 @@
 add_library(
-    Error SHARED
+    Error STATIC
     error.cpp
 )
 

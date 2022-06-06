@@ -27,9 +27,9 @@ class Socket
     std::string port;
 
     public:
-        //Socket(); /* No default constructor. */
+        // Socket(); /* No default constructor. */
         Socket(std::string const& inputAddress, int inputPort);
-        Socket(std::string const& inputAddress, std::string const& inputPort);
+        // Socket(std::string const& inputAddress, std::string const& inputPort);
         ~Socket();
 
         /** 

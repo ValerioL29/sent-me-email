@@ -25,15 +25,15 @@
 #include <string.h>
 
 
-Socket::Socket(std::string const& inputAddress, std::string const& inputPort)
-{
-    socketFileDescriptor = -1;
+// Socket::Socket(std::string const& inputAddress, std::string &inputPort)
+// {
+//     socketFileDescriptor = -1;
 
-    address = inputAddress;
-    port    = inputPort;
+//     address = inputAddress;
+//     port    = inputPort;
 
-    open();
-}
+//     open();
+// }
 
 Socket::Socket(std::string const& inputAddress, int inputPort)
 {

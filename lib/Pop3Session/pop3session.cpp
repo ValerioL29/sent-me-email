@@ -12,6 +12,7 @@
 #include <sstream>
 
 #include "Socket.h"
+#include "Base64Codec.h"
 
 Pop3Session::Pop3Session()
     : socket(NULL)
@@ -108,7 +109,7 @@ void Pop3Session::close()
     }
 }
 
-void Pop3Session::authenticate(std::string const& username, std::string const& password)
+bool Pop3Session::authenticate(std::string const& username, std::string const& password)
 {
     ServerResponse response;
 
@@ -127,6 +128,8 @@ void Pop3Session::authenticate(std::string const& username, std::string const& p
     {
         throw ServerError("Authentication failed", response.statusMessage);
     }
+
+    return response.status;
 }
 
 void Pop3Session::printMessageList()

@@ -40,9 +40,9 @@ class Pop3Session
          *
          * @param[in] username Username on remote POP3 server.
          * @param[in] password Password in plain-text form.
-         * @return void
+         * @return bool
          */
-        void authenticate(std::string const& username, std::string const& password);
+        bool authenticate(std::string const& username, std::string const& password);
 
         /**
          * @brief Print list of available messages.
