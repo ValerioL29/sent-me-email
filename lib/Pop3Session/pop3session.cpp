@@ -218,10 +218,40 @@ void Pop3Session::printMessage(int messageId)
 
     getMultilineData(&response);
     
-    for (std::list<std::string>::iterator line = response.data.begin();
-         line != response.data.end();
-         line++)
-    {
+    std::list<std::string>::iterator line = response.data.begin();
+
+    while(line != response.data.end()){
         std::cout << *line << std::endl;
+
+        
+        if( *line == "Content-Transfer-Encoding: base64" ){
+
+            response.data.pop_front();
+            line = response.data.begin();
+            std::list<std::string>::iterator blank_line = line;
+            std::cout << *line << std::endl;
+
+            response.data.pop_front();
+            line = response.data.begin();
+            while(*line != ""){
+
+                std::string encode_line =  response.data.front();
+                // std::cout << encode_line << std::endl;
+                std::string decode_line =  base64_decode(  encode_line , true );
+                std::cout << decode_line << std::endl;
+
+                response.data.pop_front();
+                line = response.data.begin();
+            }
+
+            std::cout << *line << std::endl;
+        }
+
+
+        response.data.pop_front();
+        line = response.data.begin();
+             
+        
     }
 }
+

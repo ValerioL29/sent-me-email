@@ -35,7 +35,7 @@
 
 #include <algorithm>
 #include <stdexcept>
-
+#include <iostream>
  //
  // Depending on the url parameter in base64_chars, one of
  // two sets of base64 characters needs to be chosen.
@@ -276,6 +276,8 @@ std::string base64_encode_mime(std::string_view s) {
 }
 
 std::string base64_decode(std::string_view s, bool remove_linebreaks) {
+
+
    return decode(s, remove_linebreaks);
 }
 
