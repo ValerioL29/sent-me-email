@@ -9,6 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <string>
 
 #include "Pop3Session.h"
 #include "Socket.h"
@@ -134,6 +135,7 @@ bool Pop3Session::authenticate(std::string const& username, std::string const& p
 }
 
 void Pop3Session::printMessageList()
+
 {
     ServerResponse response;
 
@@ -263,6 +265,7 @@ void Pop3Session::saveById(int messageId, std::string const& path){
 }
 
 void Pop3Session::markAsDelete(int messageId){
+
     ServerResponse response;
 
     std::string cmd = "DELE " + (char) messageId;
@@ -275,4 +278,48 @@ void Pop3Session::markAsDelete(int messageId){
     }
 
     std::cout << response.statusMessage << std::endl;
+}
+
+
+void Pop3Session::printBySubjects(){
+
+    ServerResponse response;
+    sendCommand("STAT");
+    getResponse(&response);
+    if (!response.status)
+    {
+        throw ServerError("Unable to retrieve email statuses", response.statusMessage);
+    }
+
+    int len = atoi( response.statusMessage.c_str()  );
+
+    for(int i=1 ; i<=len ; i++  ){
+        std::stringstream command;
+        command << "RETR " << i;
+        sendCommand(command.str());
+        getResponse(&response);
+        if (!response.status)
+        {
+            throw ServerError("Unable to retrieve requested message", response.statusMessage);
+        }
+
+        getMultilineData(&response);
+        std::string spider = response.data.front(); 
+        while(spider != response.data.back()){
+            
+            if( spider.substr(0,8) == "Subject:" ){
+
+                std::string subject = std::to_string(i) +  spider.substr(8 , spider.length());
+                std::cout << subject<< std::endl;
+
+            }
+
+            response.data.pop_front();
+            spider = response.data.front(); 
+
+        }
+    }
+
+
+
 }

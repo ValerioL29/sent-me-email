@@ -91,6 +91,8 @@ class Pop3Session
          */
         void markAsDelete(int messageId);
 
+        void printBySubjects();
+
         /* Exceptions */
         class ServerError;
         class FileIOError;
@@ -131,6 +133,8 @@ class Pop3Session
          * @return void
          */
         void getMultilineData(ServerResponse* response);
+
+
 
         void open(std::string const& server, int port);
         void close();

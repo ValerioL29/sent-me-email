@@ -113,6 +113,13 @@ void searchTextInAll(std::string &pattern){
 void displayBySubjects(){
     std::cout << "[INFO] Fetching targets by subjects" << std::endl;
     std::cout << "[INFO] Display emails by subjects completed.\n" << std::endl;
+
+    Pop3Session pop3(hostname, __DEFAULT_PORT);
+    pop3.authenticate(username, password);
+    pop3.printBySubjects();
+
+
+
 }
 /**
  * @brief Dowload a mail in the remote service
