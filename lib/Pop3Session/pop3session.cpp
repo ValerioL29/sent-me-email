@@ -265,8 +265,9 @@ void Pop3Session::saveById(int messageId, std::string const& path){
 void Pop3Session::markAsDelete(int messageId){
     ServerResponse response;
 
-    std::string cmd = "DELE " + (char) messageId;
-    sendCommand(cmd);
+    std::stringstream command;
+    command << "DELE " << messageId;
+    sendCommand(command.str());
 
     getResponse(&response);
     if (!response.status)
