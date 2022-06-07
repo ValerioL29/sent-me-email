@@ -64,6 +64,6 @@ Sent Me Email
 #### Advanced
 
 - [ ] Login with implicit password (replace your password by `****`)
-- [ ] Can download mails and save them only on local machine  (remove from remote server)
+- [x] Can download mails and save them only on local machine  (remove from remote server)
 - [ ] Provide function "Display by subject"
 - [ ] Provide function "Search text in all mails"

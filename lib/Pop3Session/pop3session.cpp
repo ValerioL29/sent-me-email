@@ -8,38 +8,12 @@
 
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 #include "Pop3Session.h"
 #include "Socket.h"
 #include "Base64Codec.h"
 
-// void base64CodecTesting(){
-//       // Codec testings
-
-//     bool all_tests_passed = true;
-    
-//     std::string rest0_original = "abc";
-//     std::string rest0_reference = "YWJj";
-
-//     std::string rest0_encoded = base64_encode(reinterpret_cast<const unsigned char*>(rest0_original.c_str()),
-//       rest0_original.length());
-//     std::string rest0_decoded = base64_decode(rest0_encoded);
-
-//     if (rest0_decoded != rest0_original) {
-//       std::cout << "rest0_decoded != rest0_original" << std::endl;
-//       all_tests_passed = false;
-//     }
-//     if (rest0_reference != rest0_encoded) {
-//       std::cout << "rest0_reference != rest0_encoded" << std::endl;
-//       all_tests_passed = false;
-//     }
-
-//     std::cout << "encoded:   " << rest0_encoded << std::endl;
-//     std::cout << "reference: " << rest0_reference << std::endl;
-//     std::cout << "decoded:   " << rest0_decoded << std::endl << std::endl;
-
-//     return;
-// }
 
 Pop3Session::Pop3Session()
     : socket(NULL)
@@ -201,7 +175,7 @@ void Pop3Session::printStatuses()
     std::cout << response.statusMessage << std::endl;
 }
 
-void Pop3Session::printMessage(int messageId)
+void Pop3Session::retrieveById(int messageId)
 {
     ServerResponse response;
 
@@ -222,36 +196,83 @@ void Pop3Session::printMessage(int messageId)
 
     while(line != response.data.end()){
         std::cout << *line << std::endl;
-
         
         if( *line == "Content-Transfer-Encoding: base64" ){
+            // skip blank line
+            line++; line++;
+            std::cout << std::endl;
 
-            response.data.pop_front();
-            line = response.data.begin();
-            std::list<std::string>::iterator blank_line = line;
-            std::cout << *line << std::endl;
-
-            response.data.pop_front();
-            line = response.data.begin();
-            while(*line != ""){
-
-                std::string encode_line =  response.data.front();
-                // std::cout << encode_line << std::endl;
-                std::string decode_line =  base64_decode(  encode_line , true );
+            for(;*line != ""; line++){
+                std::string encode_line = *line;
+                std::string decode_line = base64_decode(encode_line, true);
                 std::cout << decode_line << std::endl;
-
-                response.data.pop_front();
-                line = response.data.begin();
             }
 
             std::cout << *line << std::endl;
         }
 
-
-        response.data.pop_front();
-        line = response.data.begin();
-             
-        
+        line++;
     }
 }
 
+void Pop3Session::saveById(int messageId, std::string const& path){
+    ServerResponse response;
+
+    std::stringstream command;
+    command << "RETR " << messageId;
+
+    sendCommand(command.str());
+
+    getResponse(&response);
+    if (!response.status)
+    {
+        throw ServerError("Unable to retrieve requested message", response.statusMessage);
+    }
+
+    getMultilineData(&response);
+    
+    std::list<std::string>::iterator line = response.data.begin();
+
+    std::fstream fileStream;
+    fileStream.open(path, std::ios::out);
+
+    if(fileStream.is_open()){
+        while(line != response.data.end()){
+            fileStream << *line << "\n";
+            
+            if( *line == "Content-Transfer-Encoding: base64" ){
+                // skip blank line
+                line++; line++;
+                fileStream << "\n";
+
+                for(;*line != ""; line++){
+                    std::string encode_line = *line;
+                    std::string decode_line = base64_decode(encode_line, true);
+                    fileStream << decode_line << "\n";
+                }
+
+                fileStream << *line << "\n";
+            }
+
+            line++;
+        }
+        fileStream.close();
+    }else{
+        throw FileIOError("Unable to open specified path.");
+    }
+}
+
+void Pop3Session::markAsDelete(int messageId){
+    ServerResponse response;
+
+    std::string cmd = "DELE " + (char) messageId;
+    sendCommand(cmd);
+
+    getResponse(&response);
+    if (!response.status)
+    {
+        throw ServerError("Unable to delete target message", response.statusMessage);
+    }
+
+    std::cout << response.statusMessage << std::endl;
+}

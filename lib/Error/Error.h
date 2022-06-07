@@ -2,7 +2,7 @@
  * @brief Error handling and reporting tools
  *
  * @file error.h
- * @author Radek Pazdera (radek.pazdera@gmail.com)
+ * @author Jiacheng Li (cheng2029@foxmail.com)
  * 
  */
 

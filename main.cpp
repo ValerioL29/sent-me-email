@@ -38,8 +38,7 @@ const std::string afterAuth =
     "5. Display by subjects\n"
     "6. Download mails in the remote service\n"
     "7. Delete mails in the remote service\n"
-    "8. Clear screen\n"
-    "9. Quit"
+    "8. Quit"
 ;
 
 std::string hostname = "";
@@ -83,7 +82,7 @@ void displayMailInDetail(int messageId){
 
     Pop3Session pop3(hostname, __DEFAULT_PORT);
     pop3.authenticate(username, password);
-    pop3.printMessage(messageId);
+    pop3.retrieveById(messageId);
 
     std::cout << "[INFO] Details printing completed.\n" << std::endl;
 }
@@ -120,7 +119,19 @@ void displayBySubjects(){
  * 
  */
 void downloadInRemote(){
+    std::cout << "[INFO] Fetching email information..." << std::endl;
+
+    Pop3Session pop3(hostname, __DEFAULT_PORT);
+    pop3.authenticate(username, password);
+    pop3.printMessageList();
+
+    int messageId;
+    std::string savePath;
+    std::cout << "[INFO] Please enter the id of the message that you want to download: "; std::cin >> messageId;
+    std::cout << "[INFO] Please specify the path that you want to save the message to: "; std::cin >> savePath;
+
     std::cout << "[INFO] Download emails from remote server..." << std::endl;
+    pop3.saveById(messageId, savePath);
     std::cout << "[INFO] Download completed.\n" << std::endl;
 }
 /**
@@ -128,7 +139,17 @@ void downloadInRemote(){
  * 
  */
 void deleteInRemote(){
+    std::cout << "[INFO] Fetching email information..." << std::endl;
+
+    Pop3Session pop3(hostname, __DEFAULT_PORT);
+    pop3.authenticate(username, password);
+    pop3.printMessageList();
+
+    int messageId;
+    std::cout << "[INFO] Please enter the id of the message that you want to delete: "; std::cin >> messageId;
+
     std::cout << "[INFO] Delete emails from remote server..." << std::endl;
+    pop3.markAsDelete(messageId);
     std::cout << "[INFO] Delete completed.\n" << std::endl;
 }
 /**
@@ -154,7 +175,6 @@ void mainMenu(){
         switch(option){
             // "0. Help"
             case 0:
-                system("cls");
                 std::cout << "--------------- Send Me Email ---------------" << std::endl;
                 std::cout << "-----------  Username: " << username << "  -----------" << std::endl;
                 std::cout << afterAuth << std::endl;
@@ -192,12 +212,8 @@ void mainMenu(){
             case 7:
                 deleteInRemote();
                 break;
-            // "8. Clear Screen"
+            // "8. Quit"
             case 8:
-                system("cls");
-                break;
-            // "9. Quit"
-            case 9:
                 status = false;
                 break;
             default:

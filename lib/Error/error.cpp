@@ -2,7 +2,7 @@
  * @brief Error class implementation
  *
  * @file error.cpp
- * @author Radek Pazdera (radek.pazdera@gmail.com)
+ * @author Jiacheng Li (cheng2029@foxmail.com)
  * 
  */
 

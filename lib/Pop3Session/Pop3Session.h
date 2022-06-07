@@ -69,14 +69,31 @@ class Pop3Session
          *  This method downloads and prints a message specified
          *  by a message ID.
          *
-         * @param[in] messageId Id of the message to download.
+         * @param[in] messageId Id of the message to retrieve.
          * @return void
          */
-        void printMessage(int messageId);
+        void retrieveById(int messageId);
+
+        /**
+         * @brief Save a message to local specified by its id with given path. 
+         * 
+         * @param[in] messageId Id of the message to download
+         * @param[in] path File path at which the message is meant to be saved.
+         * @return void
+         */
+        void saveById(int messageId, std::string const& path);
+
+        /**
+         * @brief Delete a message with its id.
+         * 
+         * @param[in] messageId Id of the message to be deleted.
+         * @return void
+         */
+        void markAsDelete(int messageId);
 
         /* Exceptions */
         class ServerError;
-
+        class FileIOError;
     private:
         struct ServerResponse;
 
@@ -147,6 +164,20 @@ class Pop3Session::ServerError : public Error
         {
             problem = what;
             reason = serverStatus;
+        }
+};
+
+/**
+ * @brief Indicates that server answered with -ERR status.
+ *
+ * 
+ */
+class Pop3Session::FileIOError : public Error
+{
+    public:
+        FileIOError(std::string const& what)
+        {
+            problem = what;
         }
 };
 
