@@ -69,10 +69,12 @@ class Pop3Session
          *  This method downloads and prints a message specified
          *  by a message ID.
          *
-         * @param[in] messageId Id of the message to retrieve.
+         * @param[in] messageId Id of the message to retrieve.void
          * @return void
          */
-        void retrieveById(int messageId);
+        std::string retrieveById(int messageId , bool ifshow);
+        bool searchTxtInOne(int messageId, std::string pattern);
+        int getEmaiLength();
 
         /**
          * @brief Save a message to local specified by its id with given path. 

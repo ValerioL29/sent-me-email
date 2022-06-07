@@ -82,7 +82,7 @@ void displayMailInDetail(int messageId){
 
     Pop3Session pop3(hostname, __DEFAULT_PORT);
     pop3.authenticate(username, password);
-    pop3.retrieveById(messageId);
+    pop3.retrieveById(messageId,true);
 
     std::cout << "[INFO] Details printing completed.\n" << std::endl;
 }
@@ -94,17 +94,31 @@ void displayMailInDetail(int messageId){
 void searchTextInAll(std::string &pattern){
     std::vector<std::string> res;
 
-    std::cout << "[INFO] Your target text pattern is: " << pattern << std::endl;
+    std::cout << "[INFO] Your target text pattern is: " << pattern <<"\n"<<std::endl;
 
-    // Searching process
-    res.push_back("test1.eml");
-    res.push_back("test2.eml");
 
-    // Display results
-    std::cout << "[INFO] Following mails contain target pattern:" << std::endl;
-    for(int i = 1; i <= res.size(); i++) printf("%d %s\n", i, res[i - 1].c_str());
+    Pop3Session pop3(hostname, __DEFAULT_PORT);
+    pop3.authenticate(username, password);
+
+    int len = pop3.getEmaiLength();
+    int flag[len+1]={0}; 
+    for(int i=1;i<=len;i++){
+        if(pop3.searchTxtInOne(i , pattern)  ){
+            flag[i] = 1;
+            flag[0]++;
+
+            std::cout << "Email " + std::to_string(flag[0]) + " contents the pattern "<< std::endl;
+
+        }
+    }
+
+    std::cout << "The are " + std::to_string(flag[0]) + " email content the pattern" << std::endl;
+
+
     
-    std::cout << "[INFO] Pattern matching completed.\n" << std::endl;
+
+
+    std::cout << "\n[INFO] Pattern matching completed.\n" << std::endl;
 }
 /**
  * @brief Display by subjects

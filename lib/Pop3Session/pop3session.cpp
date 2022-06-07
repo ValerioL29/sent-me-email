@@ -177,7 +177,7 @@ void Pop3Session::printStatuses()
     std::cout << response.statusMessage << std::endl;
 }
 
-void Pop3Session::retrieveById(int messageId)
+std::string Pop3Session::retrieveById(int messageId , bool ifshow)
 {
     ServerResponse response;
 
@@ -196,25 +196,35 @@ void Pop3Session::retrieveById(int messageId)
     
     std::list<std::string>::iterator line = response.data.begin();
 
+    std::string decode_line;
+
     while(line != response.data.end()){
-        std::cout << *line << std::endl;
+        if(ifshow)
+            std::cout << *line << std::endl;
         
         if( *line == "Content-Transfer-Encoding: base64" ){
             // skip blank line
             line++; line++;
-            std::cout << std::endl;
+
+            if(ifshow)
+                std::cout << std::endl;
 
             for(;*line != ""; line++){
                 std::string encode_line = *line;
-                std::string decode_line = base64_decode(encode_line, true);
-                std::cout << decode_line << std::endl;
+                decode_line = base64_decode(encode_line, true);
+
+                if(ifshow)
+                    std::cout << decode_line << std::endl;
             }
 
-            std::cout << *line << std::endl;
+            if(ifshow)
+                std::cout << *line << std::endl;
         }
 
         line++;
     }
+
+    return decode_line;
 }
 
 void Pop3Session::saveById(int messageId, std::string const& path){
@@ -285,14 +295,9 @@ void Pop3Session::markAsDelete(int messageId){
 void Pop3Session::printBySubjects(){
 
     ServerResponse response;
-    sendCommand("STAT");
-    getResponse(&response);
-    if (!response.status)
-    {
-        throw ServerError("Unable to retrieve email statuses", response.statusMessage);
-    }
 
-    int len = atoi( response.statusMessage.c_str()  );
+
+    int len = getEmaiLength();
 
     for(int i=1 ; i<=len ; i++  ){
         std::stringstream command;
@@ -321,6 +326,36 @@ void Pop3Session::printBySubjects(){
         }
     }
 
+}
 
+bool Pop3Session::searchTxtInOne(int messageId, std::string pattern){
+
+    bool re = false;
+
+    std::string content = retrieveById(messageId, false);
+
+    int a = content.find(pattern);
+
+    if(a>=0){
+        re = true;
+    }
+
+    return re;
 
 }
+
+int Pop3Session::getEmaiLength(){
+
+    ServerResponse response;
+    sendCommand("STAT");
+    getResponse(&response);
+    if (!response.status)
+    {
+        throw ServerError("Unable to retrieve email statuses", response.statusMessage);
+    }
+    int len = atoi( response.statusMessage.c_str()  );
+
+    return len;
+
+}
+    
