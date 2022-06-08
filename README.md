@@ -23,10 +23,6 @@ Sent Me Email
 │   │   ├── Base64Codec.h
 │   │   ├── CMakeLists.txt
 │   │   └── base64.cpp
-│   ├── CLI
-│   │   ├── CLI.h
-│   │   ├── CMakeLists.txt
-│   │   └── cli.cpp
 │   ├── Error
 │   │   ├── CMakeLists.txt
 │   │   ├── Error.h
@@ -65,5 +61,5 @@ Sent Me Email
 
 - [ ] Login with implicit password (replace your password by `****`)
 - [x] Can download mails and save them only on local machine  (remove from remote server)
-- [ ] Provide function "Display by subject"
-- [ ] Provide function "Search text in all mails"
+- [x] Provide function "Display by subject"
+- [x] Provide function "Search text in all mails"
