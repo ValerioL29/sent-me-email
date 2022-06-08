@@ -3,7 +3,7 @@
  *
  * @file Pop3Session.h
  * @author Jiacheng Li (cheng2029@foxmail.com)
- * 
+ * @author Zhenglin Xian (617454220@qq.com)
  */
 
 #ifndef _POP3SESSION__H

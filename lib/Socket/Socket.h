@@ -1,9 +1,9 @@
 /**
  * @brief BSD sockets API adapter.
  *
- * @file socket.h
+ * @file Socket.h
  * @author Jiacheng Li (cheng2029@foxmail.com)
- * 
+ * @author Zhenglin Xian (617454220@qq.com)
  */
 
 #ifndef _SOCKET__H

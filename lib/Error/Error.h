@@ -1,8 +1,9 @@
 /**
  * @brief Error handling and reporting tools
  *
- * @file error.h
+ * @file Error.h
  * @author Jiacheng Li (cheng2029@foxmail.com)
+ * @author Zhenglin Xian (617454220@qq.com)
  * 
  */
 

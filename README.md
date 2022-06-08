@@ -5,7 +5,7 @@
 
 > Goals -
 >
-> 1. Receive Email from pop3 server.
+> 1. Communicate with pop3 server.
 > 2. Store Email in `*.eml` format.
 > 3. Friendly user interface and good interactive user experience.
 
@@ -36,16 +36,16 @@ Sent Me Email
 │   │   ├── Socket.h
 │   │   └── socket.cpp
 │   └── config.h
+│   └── conio.h
 ├── main.cpp
 └── resources
-    └── test.eml
 ```
 
 ## How to Run this project
 
 1. Install `cmake 3.0.0` or higher version
 2. Execute `cmake --build build` to build
-3. Run `./build/pop3-client` to start client application, enjoy!
+3. Run `build/pop3-client` to start client application, enjoy!
 
 ## Function Requirements
 
@@ -55,11 +55,11 @@ Sent Me Email
 - [x] Guide user to login and show information about their mails
 - [x] Display prompt characters such as `mypop >`
 - [x] Can display content of mails in terminal
-- [ ] The communication procedure can be captured by Wireshark
+- [x] The communication procedure can be captured by Wireshark
 
 #### Advanced
 
-- [ ] Login with implicit password (replace your password by `****`)
+- [x] Login with implicit password (replace your password by `****`)
 - [x] Can download mails and save them only on local machine  (remove from remote server)
 - [x] Provide function "Display by subject"
 - [x] Provide function "Search text in all mails"

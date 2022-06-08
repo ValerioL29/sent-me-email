@@ -1,8 +1,8 @@
 /**
  * @brief CLI part for the client
  *
- * @file CLI.h
  * @author Jiacheng Li (cheng2029@foxmail.com)
+ * @author Zhenglin Xian (617454220@qq.com)
  *
  */
 #include <iostream>

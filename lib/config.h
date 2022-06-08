@@ -3,12 +3,10 @@
  *
  * @file config.h
  * @author Jiacheng Li (cheng2029@foxmail.com)
+ * @author Zhenglin Xian (617454220@qq.com)
  * 
  *  Global configuration macros and values.
  *
- * @warning Beware of what you put in here and how do you
- *          name it! This file is global and the names can
- *          interfere with those defined anywhere in the program!
  */
 
 #ifndef _CONFIG__H

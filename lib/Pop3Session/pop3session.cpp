@@ -3,7 +3,7 @@
  *
  * @file pop3session.cpp
  * @author Jiacheng Li (cheng2029@foxmail.com)
- * 
+ * @author Zhenglin Xian (617454220@qq.com)
  */
 
 #include <iostream>
