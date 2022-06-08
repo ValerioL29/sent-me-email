@@ -11,8 +11,9 @@
 #include <cstdlib>
 #include <cstdio>
 #include <termios.h>
+#include "lib/conio.h"
 
-#include "../config.h"
+#include "lib/config.h"
 #include "Socket.h"
 #include "Pop3Session.h"
 #include "Config.h"
@@ -264,32 +265,30 @@ void mainMenu()
  * @return void
  */
 void getPassword(){
-    std::vector<char> buf;
+    char ch;
 
-    system("stty -icanon");
-    system("stty -echo");
-
-    do
-    {
-        char ch;
-        ch = getchar();
-        if(ch != BACKSPACE)
-        {
-            buf.push_back(ch);
-            if (ch != '\n') printf("*");
+    for(int i = 0;;){
+        ch = getch();
+        
+        if(ch == BACKSPACE){
+            if(i >= 1){
+                std::cout << "\b \b";
+                password.pop_back();
+                i--;
+            }
+            else continue;
         }
-        else if(buf.size() != 0)
-        {
-            printf("\b \b");
-            buf.pop_back();
+        else if(ch != '\n' && ch != '\r'){
+            std::cout << "*";
+            password.push_back(ch);
+            i++;
         }
-    } while (buf.back() != '\n');
-    buf.pop_back();
-
-    system("stty echo");
-    system("stty icanon");
-
-    for(int i = 0; i < buf.size(); i++) password += buf[i];
+        else{
+            password[i] = '\0';
+            std::cout << std::endl;
+            break;
+        }
+    }
 }
 
 /**
@@ -318,9 +317,9 @@ void mainEntry()
                 std::cout << "[INFO] Please enter your hostname. (e.g. pop3.163.com)" << std::endl;
                 std::cout << "mypop >> "; std::cin >> hostname;
                 std::cout << "[INFO] Please enter your username. (e.g. test02122010)" << std::endl;
-                std::cout << "mypop >> "; std::cin >> username;
+                std::cout << "mypop >> "; std::cin >> username; getchar();
                 std::cout << "[INFO] Please enter your password." << std::endl;
-                std::cout << "mypop >> "; std::cin >> password;
+                std::cout << "mypop >> "; getPassword();
 
                 /* Process user's request. */
                 try
