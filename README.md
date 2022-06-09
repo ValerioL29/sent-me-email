@@ -1,6 +1,6 @@
 # SentMeEmail
 
-#### 0. Introduction
+## Introduction
 📨 - A POP3 email application in C/C++.
 
 > Goals -
