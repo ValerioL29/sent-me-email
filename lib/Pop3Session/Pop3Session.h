@@ -136,8 +136,6 @@ class Pop3Session
          */
         void getMultilineData(ServerResponse* response);
 
-
-
         void open(std::string const& server, int port);
         void close();
 };
@@ -151,9 +149,9 @@ class Pop3Session
 struct Pop3Session::ServerResponse
 {
 
-    bool status; /*< It's true on +OK, false on -ERR */
+    bool status; /* It's true on +OK, false on -ERR */
     std::string statusMessage;
-    std::list<std::string> data; /*< Multi-line data in case, they were present. */
+    std::list<std::string> data; /* Multi-line data in case, they were present. */
 };
 
 /**
@@ -174,7 +172,7 @@ class Pop3Session::ServerError : public Error
 };
 
 /**
- * @brief Indicates that server answered with -ERR status.
+ * @brief Indicates that there are exceptions when it is trying to open a file stream.
  *
  * 
  */
