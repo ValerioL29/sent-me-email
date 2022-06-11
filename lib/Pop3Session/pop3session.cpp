@@ -15,27 +15,27 @@
 #include "Socket.h"
 #include "Base64Codec.h"
 
-
 Pop3Session::Pop3Session()
     : socket(NULL)
-{}
+{
+}
 
-Pop3Session::Pop3Session(std::string const& server, int port)
+Pop3Session::Pop3Session(std::string const &server, int port)
 {
     open(server, port);
 }
 
 Pop3Session::~Pop3Session()
 {
-   close();
+    close();
 }
 
-void Pop3Session::sendCommand(std::string const& command)
+void Pop3Session::sendCommand(std::string const &command)
 {
     socket->write(command + "\r\n");
 }
 
-void Pop3Session::getResponse(ServerResponse* response)
+void Pop3Session::getResponse(ServerResponse *response)
 {
     std::string buffer;
     socket->readLine(&buffer);
@@ -55,7 +55,7 @@ void Pop3Session::getResponse(ServerResponse* response)
     response->data.clear();
 }
 
-void Pop3Session::getMultilineData(ServerResponse* response)
+void Pop3Session::getMultilineData(ServerResponse *response)
 {
     std::string buffer;
     int bytesRead;
@@ -63,9 +63,9 @@ void Pop3Session::getMultilineData(ServerResponse* response)
     while (true)
     {
         buffer.clear();
-        
+
         bytesRead = socket->readLine(&buffer);
-        
+
         if (buffer == "." || bytesRead == 0)
         {
             break;
@@ -82,12 +82,12 @@ void Pop3Session::getMultilineData(ServerResponse* response)
     }
 }
 
-void Pop3Session::open(std::string const& server, int port)
+void Pop3Session::open(std::string const &server, int port)
 {
     socket = new Socket(server, port);
-    
+
     ServerResponse welcomeMessage;
-    
+
     getResponse(&welcomeMessage);
 
     if (!welcomeMessage.status)
@@ -102,8 +102,8 @@ void Pop3Session::close()
     {
         sendCommand("QUIT");
 
-        //ServerResponse quitACK;
-        //getResponse(&quitACK);
+        // ServerResponse quitACK;
+        // getResponse(&quitACK);
 
         /* Maybe print a warning when QUIT fails? */
 
@@ -111,7 +111,7 @@ void Pop3Session::close()
     }
 }
 
-bool Pop3Session::authenticate(std::string const& username, std::string const& password)
+bool Pop3Session::authenticate(std::string const &username, std::string const &password)
 {
     ServerResponse response;
 
@@ -154,9 +154,9 @@ void Pop3Session::printMessageList()
         std::cout << "No messages available on the server." << std::endl;
     }
 
-    for(std::list<std::string>::iterator line = response.data.begin();
-        line != response.data.end();
-        line++)
+    for (std::list<std::string>::iterator line = response.data.begin();
+         line != response.data.end();
+         line++)
     {
         std::cout << *line << std::endl;
     }
@@ -177,7 +177,7 @@ void Pop3Session::printStatuses()
     std::cout << response.statusMessage << std::endl;
 }
 
-std::string Pop3Session::retrieveById(int messageId , bool ifshow)
+std::string Pop3Session::retrieveById(int messageId, bool ifshow)
 {
     ServerResponse response;
 
@@ -193,31 +193,35 @@ std::string Pop3Session::retrieveById(int messageId , bool ifshow)
     }
 
     getMultilineData(&response);
-    
+
     std::list<std::string>::iterator line = response.data.begin();
 
     std::string decode_line;
 
-    while(line != response.data.end()){
-        if(ifshow)
+    while (line != response.data.end())
+    {
+        if (ifshow)
             std::cout << *line << std::endl;
-        
-        if( *line == "Content-Transfer-Encoding: base64" ){
-            // skip blank line
-            line++; line++;
 
-            if(ifshow)
+        if (*line == "Content-Transfer-Encoding: base64")
+        {
+            // skip blank line
+            line++;
+            line++;
+
+            if (ifshow)
                 std::cout << std::endl;
 
-            for(;*line != ""; line++){
+            for (; *line != ""; line++)
+            {
                 std::string encode_line = *line;
                 decode_line = base64_decode(encode_line, true);
 
-                if(ifshow)
+                if (ifshow)
                     std::cout << decode_line << std::endl;
             }
 
-            if(ifshow)
+            if (ifshow)
                 std::cout << *line << std::endl;
         }
 
@@ -227,7 +231,8 @@ std::string Pop3Session::retrieveById(int messageId , bool ifshow)
     return decode_line;
 }
 
-void Pop3Session::saveById(int messageId, std::string const& path){
+void Pop3Session::saveById(int messageId, std::string const &path)
+{
     ServerResponse response;
 
     std::stringstream command;
@@ -242,22 +247,27 @@ void Pop3Session::saveById(int messageId, std::string const& path){
     }
 
     getMultilineData(&response);
-    
+
     std::list<std::string>::iterator line = response.data.begin();
 
     std::fstream fileStream;
     fileStream.open(path, std::ios::out);
 
-    if(fileStream.is_open()){
-        while(line != response.data.end()){
+    if (fileStream.is_open())
+    {
+        while (line != response.data.end())
+        {
             fileStream << *line << "\n";
-            
-            if( *line == "Content-Transfer-Encoding: base64" ){
+
+            if (*line == "Content-Transfer-Encoding: base64")
+            {
                 // skip blank line
-                line++; line++;
+                line++;
+                line++;
                 fileStream << "\n";
 
-                for(;*line != ""; line++){
+                for (; *line != ""; line++)
+                {
                     std::string encode_line = *line;
                     std::string decode_line = base64_decode(encode_line, true);
                     fileStream << decode_line << "\n";
@@ -269,12 +279,15 @@ void Pop3Session::saveById(int messageId, std::string const& path){
             line++;
         }
         fileStream.close();
-    }else{
+    }
+    else
+    {
         throw FileIOError("Unable to open specified path.");
     }
 }
 
-void Pop3Session::markAsDelete(int messageId){
+void Pop3Session::markAsDelete(int messageId)
+{
 
     ServerResponse response;
 
@@ -291,15 +304,15 @@ void Pop3Session::markAsDelete(int messageId){
     std::cout << response.statusMessage << std::endl;
 }
 
-
-void Pop3Session::printBySubjects(){
+void Pop3Session::printBySubjects()
+{
 
     ServerResponse response;
 
-
     int len = getEmaiLength();
 
-    for(int i=1 ; i<=len ; i++  ){
+    for (int i = 1; i <= len; i++)
+    {
         std::stringstream command;
         command << "RETR " << i;
         sendCommand(command.str());
@@ -310,25 +323,25 @@ void Pop3Session::printBySubjects(){
         }
 
         getMultilineData(&response);
-        std::string spider = response.data.front(); 
-        while(spider != response.data.back()){
-            
-            if( spider.substr(0,8) == "Subject:" ){
+        std::string spider = response.data.front();
+        while (spider != response.data.back())
+        {
 
-                std::string subject = std::to_string(i) +  spider.substr(8 , spider.length());
-                std::cout << subject<< std::endl;
+            if (spider.substr(0, 8) == "Subject:")
+            {
 
+                std::string subject = std::to_string(i) + spider.substr(8, spider.length());
+                std::cout << subject << std::endl;
             }
 
             response.data.pop_front();
-            spider = response.data.front(); 
-
+            spider = response.data.front();
         }
     }
-
 }
 
-bool Pop3Session::searchTxtInOne(int messageId, std::string pattern){
+bool Pop3Session::searchTxtInOne(int messageId, std::string pattern)
+{
 
     bool re = false;
 
@@ -336,15 +349,16 @@ bool Pop3Session::searchTxtInOne(int messageId, std::string pattern){
 
     int a = content.find(pattern);
 
-    if(a>=0){
+    if (a >= 0)
+    {
         re = true;
     }
 
     return re;
-
 }
 
-int Pop3Session::getEmaiLength(){
+int Pop3Session::getEmaiLength()
+{
 
     ServerResponse response;
     sendCommand("STAT");
@@ -353,9 +367,7 @@ int Pop3Session::getEmaiLength(){
     {
         throw ServerError("Unable to retrieve email statuses", response.statusMessage);
     }
-    int len = atoi( response.statusMessage.c_str()  );
+    int len = atoi(response.statusMessage.c_str());
 
     return len;
-
 }
-    

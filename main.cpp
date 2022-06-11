@@ -11,8 +11,8 @@
 #include <cstdlib>
 #include <cstdio>
 #include <termios.h>
-#include "lib/conio.h"
 
+#include "lib/conio.h"
 #include "lib/config.h"
 #include "Socket.h"
 #include "Pop3Session.h"
@@ -115,11 +115,11 @@ void searchTextInAll(std::string &pattern)
             flag[i] = 1;
             flag[0]++;
 
-            std::cout << "Email " + std::to_string(flag[0]) + " contents the pattern " << std::endl;
+            std::cout << "Email with id: " + std::to_string(flag[0]) + " contains the pattern " << std::endl;
         }
     }
 
-    std::cout << "The are " + std::to_string(flag[0]) + " email content the pattern" << std::endl;
+    std::cout << "There is(are) " + std::to_string(flag[0]) + " email(s) containing the pattern" << std::endl;
 
     std::cout << "\n[INFO] Pattern matching completed.\n"
               << std::endl;
@@ -349,6 +349,8 @@ void mainEntry()
                 std::cout << "[INFO] Exit code" << std::endl;
                 status = false;
                 break;
+            case 3:
+                
             default:
                 std::cout << "[ERROR] Invalid Option! Please enter a number which is given above." << std::endl;
         }
