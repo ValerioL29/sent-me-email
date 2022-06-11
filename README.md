@@ -43,9 +43,11 @@ Sent Me Email
 
 ## How to Run this project
 
-1. Install `cmake 3.0.0` or higher version
-2. Execute `cmake --build build` to build
-3. Run `build/pop3-client` to start client application, enjoy!
+1. Install `cmake 3.0.0` or higher version.
+2. Clone this project onto your device and `cd` into project folder.
+3. Execute `cmake -B build` to create target folder.
+4. Execute `cmake --build build` to build the whole project and create an executable target.
+5. Run `build/pop3-client` to start client application, enjoy!
 
 ## Function Requirements
 
