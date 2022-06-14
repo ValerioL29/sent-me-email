@@ -49,6 +49,7 @@ std::string password = "";
 /**
  * @brief Get a list of messages and sizes
  *
+ * @return void
  */
 void getListOfInfo()
 {
@@ -64,6 +65,7 @@ void getListOfInfo()
 /**
  * @brief Get Emails' Statuses
  *
+ * @return void
  */
 void getEmailStatuses()
 {
@@ -81,6 +83,7 @@ void getEmailStatuses()
  * @brief Display mail in detail
  *
  * @param messageId Target message id
+ * @return void
  */
 void displayMailInDetail(int messageId)
 {
@@ -97,6 +100,7 @@ void displayMailInDetail(int messageId)
  * @brief Search text in all mails
  *
  * @param pattern Target pattern
+ * @return void
  */
 void searchTextInAll(std::string &pattern)
 {
@@ -127,6 +131,7 @@ void searchTextInAll(std::string &pattern)
 /**
  * @brief Display by subjects
  *
+ * @return void
  */
 void displayBySubjects()
 {
@@ -142,6 +147,7 @@ void displayBySubjects()
 /**
  * @brief Dowload a mail in the remote service
  *
+ * @return void
  */
 void downloadInRemote()
 {
@@ -166,6 +172,7 @@ void downloadInRemote()
 /**
  * @brief Delete a mail in the remote service
  *
+ * @return void
  */
 void deleteInRemote()
 {
@@ -179,10 +186,24 @@ void deleteInRemote()
     std::cout << "[INFO] Please enter the id of the message that you want to delete: ";
     std::cin >> messageId;
 
-    std::cout << "[INFO] Delete emails from remote server..." << std::endl;
+    std::cout << "[INFO] Mark target email from remote server..." << std::endl;
     pop3.markAsDelete(messageId);
-    std::cout << "[INFO] Delete completed.\n"
+    std::cout << "[INFO] Target email is successfully marked to be deleted."
               << std::endl;
+
+    std::string confirm;
+    std::cout << "[INFO] Confirm to delete (Enter [y|N]): ";
+    std::cin >> confirm;
+
+    if (confirm == "y")
+        std::cout << "[INFO] Message deleting complete.\n"
+                  << std::endl;
+    else
+    {
+        std::cout << "[INFO] Reset all delete marks.\n"
+                  << std::endl;
+        pop3.resetDelete();
+    }
 }
 /**
  * @brief After being authorized, loop menu.
@@ -208,82 +229,90 @@ void mainMenu()
 
         switch (option)
         {
-            // "0. Help"
-            case 0:
-                std::cout << "--------------- Send Me Email ---------------" << std::endl;
-                std::cout << "-----------  Username: " << username << "  -----------" << std::endl;
-                std::cout << afterAuth << std::endl;
-                break;
-            // "1. Get a list of messages and sizes\n"
-            case 1:
-                getListOfInfo();
-                break;
-            // "2. Get mail statuses\n"
-            case 2:
-                getEmailStatuses();
-                break;
-            // "3. Display mail in detail\n"
-            case 3:
-                std::cout << "[INFO] Please enter target message id: ";
-                std::cin >> messageId;
-                displayMailInDetail(messageId);
-                break;
-            // "4. Search text in all mails\n"
-            case 4:
-                std::cout << "[INFO] Please enter a text pattern: ";
-                std::cin >> pattern;
+        // "0. Help"
+        case 0:
+            std::cout << "--------------- Send Me Email ---------------" << std::endl;
+            std::cout << "-----------  Username: " << username << "  -----------" << std::endl;
+            std::cout << afterAuth << std::endl;
+            break;
+        // "1. Get a list of messages and sizes\n"
+        case 1:
+            getListOfInfo();
+            break;
+        // "2. Get mail statuses\n"
+        case 2:
+            getEmailStatuses();
+            break;
+        // "3. Display mail in detail\n"
+        case 3:
+            std::cout << "[INFO] Please enter target message id: ";
+            std::cin >> messageId;
+            displayMailInDetail(messageId);
+            break;
+        // "4. Search text in all mails\n"
+        case 4:
+            std::cout << "[INFO] Please enter a text pattern: ";
+            std::cin >> pattern;
 
-                searchTextInAll(pattern);
-                break;
-            // "5. Display by subjects\n"
-            case 5:
-                displayBySubjects();
-                break;
-            // "6. Download mails in the remote service\n"
-            case 6:
-                downloadInRemote();
-                break;
-            // "7. Delete mails in the remote service\n"
-            case 7:
-                deleteInRemote();
-                break;
-            // "8. Quit"
-            case 8:
-                status = false;
-                break;
-            default:
-                std::cout << "[ERROR] Invalid Option! Please enter a number which is given above." << std::endl;
+            searchTextInAll(pattern);
+            break;
+        // "5. Display by subjects\n"
+        case 5:
+            displayBySubjects();
+            break;
+        // "6. Download mails in the remote service\n"
+        case 6:
+            downloadInRemote();
+            break;
+        // "7. Delete mails in the remote service\n"
+        case 7:
+            deleteInRemote();
+            break;
+        // "8. Quit"
+        case 8:
+            status = false;
+            break;
+        default:
+            std::cout << "[ERROR] Invalid Option! Please enter a number which is given above." << std::endl;
         }
 
-        if (!status) break;
+        if (!status)
+            break;
     }
 }
 
 /**
  * @brief Get the Password with stars
- * 
+ *
  * @return void
  */
-void getPassword(){
+void getPassword()
+{
     char ch;
 
-    for(int i = 0;;){
+    for (int i = 0;;)
+    {
         ch = getch();
-        
-        if(ch == BACKSPACE){
-            if(i >= 1){
+
+        if (ch == BACKSPACE)
+        {
+            if (i >= 1)
+            {
                 std::cout << "\b \b";
                 password.pop_back();
                 i--;
             }
-            else continue;
+            else
+                continue;
         }
-        else if(ch != '\n' && ch != '\r'){
+        else if (ch != '\n' && ch != '\r')
+        {
             std::cout << "*";
             password.push_back(ch);
             i++;
         }
-        else{
+        else
+        {
             password[i] = '\0';
             std::cout << std::endl;
             break;
@@ -294,6 +323,7 @@ void getPassword(){
 /**
  * @brief This is the main entry application of our POP3 client.
  *
+ * @return void
  */
 void mainEntry()
 {
@@ -311,51 +341,57 @@ void mainEntry()
 
         switch (option)
         {
-            // 1. Sign in
-            case 1:
-                std::cout << "[INFO] User authentication Entry" << std::endl;
-                std::cout << "[INFO] Please enter your hostname. (e.g. pop3.163.com)" << std::endl;
-                std::cout << "mypop >> "; std::cin >> hostname;
-                std::cout << "[INFO] Please enter your username. (e.g. test02122010)" << std::endl;
-                std::cout << "mypop >> "; std::cin >> username; getchar();
-                std::cout << "[INFO] Please enter your password." << std::endl;
-                std::cout << "mypop >> "; getPassword();
+        // 1. Sign in
+        case 1:
+            std::cout << "[INFO] User authentication Entry" << std::endl;
+            std::cout << "[INFO] Please enter your hostname. (e.g. pop3.163.com)" << std::endl;
+            std::cout << "mypop >> ";
+            std::cin >> hostname;
+            std::cout << "[INFO] Please enter your username. (e.g. test02122010)" << std::endl;
+            std::cout << "mypop >> ";
+            std::cin >> username;
+            getchar();
+            std::cout << "[INFO] Please enter your password." << std::endl;
+            std::cout << "mypop >> ";
+            getPassword();
 
-                /* Process user's request. */
-                try
-                {
-                    Pop3Session pop3(hostname, __DEFAULT_PORT);
-                    res = pop3.authenticate(username, password);
+            /* Process user's request. */
+            try
+            {
+                Pop3Session pop3(hostname, __DEFAULT_PORT);
+                res = pop3.authenticate(username, password);
 
-                    // password.clear(); // Remove password from memory
-                }
-                catch (Error &error)
-                {
-                    std::cerr << error.what() << std::endl;
-                    exit(EXIT_FAILURE);
-                }
+                // password.clear(); // Remove password from memory
+            }
+            catch (Error &error)
+            {
+                std::cerr << error.what() << std::endl;
+                exit(EXIT_FAILURE);
+            }
 
-                if (!res) std::cout << "[ERROR] User authentication failed!" << std::endl;
-                else
-                {
-                    std::cout << "[INFO] User authentication completed!" << std::endl;
-                    mainMenu();
-                }
+            if (!res)
+                std::cout << "[ERROR] User authentication failed!" << std::endl;
+            else
+            {
+                std::cout << "[INFO] User authentication completed!" << std::endl;
+                mainMenu();
+            }
 
-                status = false;
-                break;
-            // 2. Exit
-            case 2:
-                std::cout << "[INFO] Exit code" << std::endl;
-                status = false;
-                break;
-            case 3:
-                
-            default:
-                std::cout << "[ERROR] Invalid Option! Please enter a number which is given above." << std::endl;
+            status = false;
+            break;
+        // 2. Exit
+        case 2:
+            std::cout << "[INFO] Exit code" << std::endl;
+            status = false;
+            break;
+        case 3:
+
+        default:
+            std::cout << "[ERROR] Invalid Option! Please enter a number which is given above." << std::endl;
         }
 
-        if (!status) break;
+        if (!status)
+            break;
     }
 
     std::cout << "[INFO] Gracefully shutting down POP3 client..." << std::endl;

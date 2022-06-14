@@ -43,12 +43,12 @@ void Pop3Session::getResponse(ServerResponse *response)
     if (buffer[0] == '+')
     {
         response->status = true;
-        buffer.erase(0, 4); // Remove the "+OK "
+        buffer.erase(0, 4);
     }
     else
     {
         response->status = false;
-        buffer.erase(0, 5); // Remove the "-ERR "
+        buffer.erase(0, 5);
     }
 
     response->statusMessage = buffer;
@@ -101,11 +101,6 @@ void Pop3Session::close()
     if (socket != NULL)
     {
         sendCommand("QUIT");
-
-        // ServerResponse quitACK;
-        // getResponse(&quitACK);
-
-        /* Maybe print a warning when QUIT fails? */
 
         delete socket;
     }
@@ -205,7 +200,6 @@ std::string Pop3Session::retrieveById(int messageId, bool ifshow)
 
         if (*line == "Content-Transfer-Encoding: base64")
         {
-            // skip blank line
             line++;
             line++;
 
@@ -261,7 +255,6 @@ void Pop3Session::saveById(int messageId, std::string const &path)
 
             if (*line == "Content-Transfer-Encoding: base64")
             {
-                // skip blank line
                 line++;
                 line++;
                 fileStream << "\n";
@@ -288,7 +281,6 @@ void Pop3Session::saveById(int messageId, std::string const &path)
 
 void Pop3Session::markAsDelete(int messageId)
 {
-
     ServerResponse response;
 
     std::stringstream command;
@@ -300,13 +292,25 @@ void Pop3Session::markAsDelete(int messageId)
     {
         throw ServerError("Unable to delete target message", response.statusMessage);
     }
+}
 
-    std::cout << response.statusMessage << std::endl;
+void Pop3Session::resetDelete()
+{
+    ServerResponse response;
+
+    std::stringstream command;
+    command << "RSET";
+    sendCommand(command.str());
+
+    getResponse(&response);
+    if (!response.status)
+    {
+        throw ServerError("Unable to reset delete marks", response.statusMessage);
+    }
 }
 
 void Pop3Session::printBySubjects()
 {
-
     ServerResponse response;
 
     int len = getEmaiLength();
@@ -340,9 +344,8 @@ void Pop3Session::printBySubjects()
     }
 }
 
-bool Pop3Session::searchTxtInOne(int messageId, std::string pattern)
+bool Pop3Session::searchTxtInOne(int messageId, std::string &pattern)
 {
-
     bool re = false;
 
     std::string content = retrieveById(messageId, false);
@@ -359,7 +362,6 @@ bool Pop3Session::searchTxtInOne(int messageId, std::string pattern)
 
 int Pop3Session::getEmaiLength()
 {
-
     ServerResponse response;
     sendCommand("STAT");
     getResponse(&response);

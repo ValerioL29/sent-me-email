@@ -73,7 +73,22 @@ class Pop3Session
          * @return void
          */
         std::string retrieveById(int messageId , bool ifshow);
-        bool searchTxtInOne(int messageId, std::string pattern);
+
+        /**
+         * @brief Search a given pattern within a specified message
+         * 
+         * @param messageId 
+         * @param pattern 
+         * @return true 
+         * @return false 
+         */
+        bool searchTxtInOne(int messageId, std::string &pattern);
+
+        /**
+         * @brief Get the number of messages
+         * 
+         * @return int 
+         */
         int getEmaiLength();
 
         /**
@@ -93,6 +108,18 @@ class Pop3Session
          */
         void markAsDelete(int messageId);
 
+        /**
+         * @brief Reset all delete marks
+         * 
+         * @return void
+         */
+        void resetDelete();
+
+        /**
+         * @brief Print each messages with its subject.
+         * 
+         * @return void
+         */
         void printBySubjects();
 
         /* Exceptions */
