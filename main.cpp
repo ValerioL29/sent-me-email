@@ -229,51 +229,51 @@ void mainMenu()
 
         switch (option)
         {
-        // "0. Help"
-        case 0:
-            std::cout << "--------------- Send Me Email ---------------" << std::endl;
-            std::cout << "-----------  Username: " << username << "  -----------" << std::endl;
-            std::cout << afterAuth << std::endl;
-            break;
-        // "1. Get a list of messages and sizes\n"
-        case 1:
-            getListOfInfo();
-            break;
-        // "2. Get mail statuses\n"
-        case 2:
-            getEmailStatuses();
-            break;
-        // "3. Display mail in detail\n"
-        case 3:
-            std::cout << "[INFO] Please enter target message id: ";
-            std::cin >> messageId;
-            displayMailInDetail(messageId);
-            break;
-        // "4. Search text in all mails\n"
-        case 4:
-            std::cout << "[INFO] Please enter a text pattern: ";
-            std::cin >> pattern;
+            // "0. Help"
+            case 0:
+                std::cout << "--------------- Send Me Email ---------------" << std::endl;
+                std::cout << "-----------  Username: " << username << "  -----------" << std::endl;
+                std::cout << afterAuth << std::endl;
+                break;
+            // "1. Get a list of messages and sizes\n"
+            case 1:
+                getListOfInfo();
+                break;
+            // "2. Get mail statuses\n"
+            case 2:
+                getEmailStatuses();
+                break;
+            // "3. Display mail in detail\n"
+            case 3:
+                std::cout << "[INFO] Please enter target message id: ";
+                std::cin >> messageId;
+                displayMailInDetail(messageId);
+                break;
+            // "4. Search text in all mails\n"
+            case 4:
+                std::cout << "[INFO] Please enter a text pattern: ";
+                std::cin >> pattern;
 
-            searchTextInAll(pattern);
-            break;
-        // "5. Display by subjects\n"
-        case 5:
-            displayBySubjects();
-            break;
-        // "6. Download mails in the remote service\n"
-        case 6:
-            downloadInRemote();
-            break;
-        // "7. Delete mails in the remote service\n"
-        case 7:
-            deleteInRemote();
-            break;
-        // "8. Quit"
-        case 8:
-            status = false;
-            break;
-        default:
-            std::cout << "[ERROR] Invalid Option! Please enter a number which is given above." << std::endl;
+                searchTextInAll(pattern);
+                break;
+            // "5. Display by subjects\n"
+            case 5:
+                displayBySubjects();
+                break;
+            // "6. Download mails in the remote service\n"
+            case 6:
+                downloadInRemote();
+                break;
+            // "7. Delete mails in the remote service\n"
+            case 7:
+                deleteInRemote();
+                break;
+            // "8. Quit"
+            case 8:
+                status = false;
+                break;
+            default:
+                std::cout << "[ERROR] Invalid Option! Please enter a number which is given above." << std::endl;
         }
 
         if (!status)
@@ -341,53 +341,50 @@ void mainEntry()
 
         switch (option)
         {
-        // 1. Sign in
-        case 1:
-            std::cout << "[INFO] User authentication Entry" << std::endl;
-            std::cout << "[INFO] Please enter your hostname. (e.g. pop3.163.com)" << std::endl;
-            std::cout << "mypop >> ";
-            std::cin >> hostname;
-            std::cout << "[INFO] Please enter your username. (e.g. test02122010)" << std::endl;
-            std::cout << "mypop >> ";
-            std::cin >> username;
-            getchar();
-            std::cout << "[INFO] Please enter your password." << std::endl;
-            std::cout << "mypop >> ";
-            getPassword();
+            // 1. Sign in
+            case 1:
+                std::cout << "[INFO] User authentication Entry" << std::endl;
+                std::cout << "[INFO] Please enter your hostname. (e.g. pop3.163.com)" << std::endl;
+                std::cout << "mypop >> ";
+                std::cin >> hostname;
+                std::cout << "[INFO] Please enter your username. (e.g. test02122010)" << std::endl;
+                std::cout << "mypop >> ";
+                std::cin >> username;
+                getchar();
+                std::cout << "[INFO] Please enter your password." << std::endl;
+                std::cout << "mypop >> ";
+                getPassword();
 
-            /* Process user's request. */
-            try
-            {
-                Pop3Session pop3(hostname, __DEFAULT_PORT);
-                res = pop3.authenticate(username, password);
+                try
+                {
+                    Pop3Session pop3(hostname, __DEFAULT_PORT);
+                    res = pop3.authenticate(username, password);
+                }
+                catch (Error &error)
+                {
+                    std::clog << error.what() << std::endl;
+                    exit(EXIT_FAILURE);
+                }
 
-                // password.clear(); // Remove password from memory
-            }
-            catch (Error &error)
-            {
-                std::cerr << error.what() << std::endl;
-                exit(EXIT_FAILURE);
-            }
+                if (!res)
+                    std::cout << "[ERROR] User authentication failed!" << std::endl;
+                else
+                {
+                    std::cout << "[INFO] User authentication completed!" << std::endl;
+                    mainMenu();
+                }
 
-            if (!res)
-                std::cout << "[ERROR] User authentication failed!" << std::endl;
-            else
-            {
-                std::cout << "[INFO] User authentication completed!" << std::endl;
-                mainMenu();
-            }
+                status = false;
+                break;
+            // 2. Exit
+            case 2:
+                std::cout << "[INFO] Exit code" << std::endl;
+                status = false;
+                break;
+            case 3:
 
-            status = false;
-            break;
-        // 2. Exit
-        case 2:
-            std::cout << "[INFO] Exit code" << std::endl;
-            status = false;
-            break;
-        case 3:
-
-        default:
-            std::cout << "[ERROR] Invalid Option! Please enter a number which is given above." << std::endl;
+            default:
+                std::cout << "[ERROR] Invalid Option! Please enter a number which is given above." << std::endl;
         }
 
         if (!status)

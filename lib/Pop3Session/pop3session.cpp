@@ -113,6 +113,8 @@ bool Pop3Session::authenticate(std::string const &username, std::string const &p
     sendCommand("USER " + username);
     getResponse(&response);
 
+    std::cout << "[INFO] " << response.statusMessage << std::endl;
+
     if (!response.status)
     {
         throw ServerError("Authentication failed", response.statusMessage);
@@ -120,6 +122,8 @@ bool Pop3Session::authenticate(std::string const &username, std::string const &p
 
     sendCommand("PASS " + password);
     getResponse(&response);
+
+    std::cout << "[INFO] " << response.statusMessage << std::endl;
 
     if (!response.status)
     {
