@@ -82,7 +82,7 @@ class Pop3Session
          * @return true 
          * @return false 
          */
-        bool searchTxtInOne(int messageId, std::string &pattern);
+        bool searchTxtInOne(int messageId, std::string const &pattern);
 
         /**
          * @brief Get the number of messages
@@ -191,7 +191,7 @@ struct Pop3Session::ServerResponse
 class Pop3Session::ServerError : public Error
 {
     public:
-        ServerError(std::string const& what, std::string const& serverStatus)
+        ServerError(std::string const &what, std::string const &serverStatus)
         {
             problem = what;
             reason = serverStatus;
@@ -206,7 +206,7 @@ class Pop3Session::ServerError : public Error
 class Pop3Session::FileIOError : public Error
 {
     public:
-        FileIOError(std::string const& what)
+        FileIOError(std::string const &what)
         {
             problem = what;
         }

@@ -42,11 +42,13 @@ void Pop3Session::getResponse(ServerResponse *response)
 
     if (buffer[0] == '+')
     {
+        /* Remove "+OK " */
         response->status = true;
         buffer.erase(0, 4);
     }
     else
     {
+        /* Remove "-ERR " */
         response->status = false;
         buffer.erase(0, 5);
     }
@@ -113,20 +115,18 @@ bool Pop3Session::authenticate(std::string const &username, std::string const &p
     sendCommand("USER " + username);
     getResponse(&response);
 
-    std::cout << "[INFO] " << response.statusMessage << std::endl;
-
     if (!response.status)
     {
+        std::cout << "[ERROR] USER command response: " << response.statusMessage << std::endl;
         throw ServerError("Authentication failed", response.statusMessage);
     }
 
     sendCommand("PASS " + password);
     getResponse(&response);
 
-    std::cout << "[INFO] " << response.statusMessage << std::endl;
-
     if (!response.status)
     {
+        std::cout << "[ERROR] PASS command response: " << response.statusMessage << std::endl;
         throw ServerError("Authentication failed", response.statusMessage);
     }
 
@@ -348,7 +348,7 @@ void Pop3Session::printBySubjects()
     }
 }
 
-bool Pop3Session::searchTxtInOne(int messageId, std::string &pattern)
+bool Pop3Session::searchTxtInOne(int messageId, std::string const &pattern)
 {
     bool re = false;
 

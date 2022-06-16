@@ -362,13 +362,10 @@ void mainEntry()
                 }
                 catch (Error &error)
                 {
-                    std::clog << error.what() << std::endl;
-                    exit(EXIT_FAILURE);
+                    std::cout << "[ERROR] User authentication failed!" << std::endl;
                 }
 
-                if (!res)
-                    std::cout << "[ERROR] User authentication failed!" << std::endl;
-                else
+                if (res)
                 {
                     std::cout << "[INFO] User authentication completed!" << std::endl;
                     mainMenu();
