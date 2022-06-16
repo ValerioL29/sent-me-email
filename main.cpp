@@ -47,6 +47,73 @@ std::string username = "";
 std::string password = "";
 
 /**
+ * @brief Get the Password with stars
+ *
+ * @return void
+ */
+void getPassword()
+{
+    char ch;
+
+    for (int i = 0;;)
+    {
+        ch = getch();
+
+        if (ch == BACKSPACE)
+        {
+            if (i >= 1)
+            {
+                std::cout << "\b \b";
+                password.pop_back();
+                i--;
+            }
+            else
+                continue;
+        }
+        else if (ch != '\n' && ch != '\r')
+        {
+            std::cout << "*";
+            password.push_back(ch);
+            i++;
+        }
+        else
+        {
+            password[i] = '\0';
+            std::cout << std::endl;
+            break;
+        }
+    }
+}
+
+/**
+ * @brief user authentication test.
+ * 
+ * @return true Authentication successful.
+ * @return false Authentication failed.
+ */
+bool userAuthentication(){
+    std::cout << "[INFO] User authentication Entry" << std::endl;
+
+    std::cout << "[INFO] Please enter your hostname. (e.g. pop3.163.com)" << std::endl;
+    std::cout << "mypop >> ";
+    std::cin >> hostname;
+
+    std::cout << "[INFO] Please enter your username. (e.g. test02122010)" << std::endl;
+    std::cout << "mypop >> ";
+    std::cin >> username;
+    getchar();
+
+    std::cout << "[INFO] Please enter your password." << std::endl;
+    std::cout << "mypop >> ";
+    getPassword();
+
+    Pop3Session pop3(hostname, __DEFAULT_PORT);
+    bool ret = pop3.authenticate(username, password);
+
+    return ret;
+}
+
+/**
  * @brief Get a list of messages and sizes
  *
  * @return void
@@ -237,36 +304,91 @@ void mainMenu()
                 break;
             // "1. Get a list of messages and sizes\n"
             case 1:
-                getListOfInfo();
+                try
+                {
+                    getListOfInfo();
+                }
+                catch(Error& e)
+                {
+                    std::cout << "[ERROR] Unexpected failure." << std::endl;
+                }
+                
                 break;
             // "2. Get mail statuses\n"
             case 2:
-                getEmailStatuses();
+                try
+                {
+                    getEmailStatuses();
+                }
+                catch(Error& e)
+                {
+                    std::cout << "[ERROR] Unexpected failure." << std::endl;
+                }
+                
                 break;
             // "3. Display mail in detail\n"
             case 3:
-                std::cout << "[INFO] Please enter target message id: ";
-                std::cin >> messageId;
-                displayMailInDetail(messageId);
+                try
+                {
+                    std::cout << "[INFO] Please enter target message id: ";
+                    std::cin >> messageId;
+                    displayMailInDetail(messageId);
+                }
+                catch(Error& e)
+                {
+                    std::cout << "[ERROR] Unexpected failure." << std::endl;
+                }
+                
                 break;
             // "4. Search text in all mails\n"
             case 4:
-                std::cout << "[INFO] Please enter a text pattern: ";
-                std::cin >> pattern;
-
-                searchTextInAll(pattern);
+                try
+                {
+                    std::cout << "[INFO] Please enter a text pattern: ";
+                    std::cin >> pattern;
+                    searchTextInAll(pattern);
+                }
+                catch(Error& e)
+                {
+                    std::cout << "[ERROR] Unexpected failure." << std::endl;
+                }
+                
                 break;
             // "5. Display by subjects\n"
             case 5:
-                displayBySubjects();
+                try
+                {
+                    displayBySubjects();
+                }
+                catch(Error& e)
+                {
+                    std::cout << "[ERROR] Unexpected failure." << std::endl;
+                }
+                
                 break;
             // "6. Download mails in the remote service\n"
             case 6:
-                downloadInRemote();
+                try
+                {
+                    downloadInRemote();
+                }
+                catch(Error& e)
+                {
+                    std::cout << "[ERROR] Unexpected failure." << std::endl;
+                }
+                
                 break;
             // "7. Delete mails in the remote service\n"
             case 7:
-                deleteInRemote();
+                try
+                {
+                    deleteInRemote();
+                }
+                catch(Error& e)
+                {
+                    std::cout << "[ERROR] Unexpected failure." << std::endl;
+                }
+                
                 break;
             // "8. Quit"
             case 8:
@@ -278,45 +400,6 @@ void mainMenu()
 
         if (!status)
             break;
-    }
-}
-
-/**
- * @brief Get the Password with stars
- *
- * @return void
- */
-void getPassword()
-{
-    char ch;
-
-    for (int i = 0;;)
-    {
-        ch = getch();
-
-        if (ch == BACKSPACE)
-        {
-            if (i >= 1)
-            {
-                std::cout << "\b \b";
-                password.pop_back();
-                i--;
-            }
-            else
-                continue;
-        }
-        else if (ch != '\n' && ch != '\r')
-        {
-            std::cout << "*";
-            password.push_back(ch);
-            i++;
-        }
-        else
-        {
-            password[i] = '\0';
-            std::cout << std::endl;
-            break;
-        }
     }
 }
 
@@ -343,27 +426,15 @@ void mainEntry()
         {
             // 1. Sign in
             case 1:
-                std::cout << "[INFO] User authentication Entry" << std::endl;
-                std::cout << "[INFO] Please enter your hostname. (e.g. pop3.163.com)" << std::endl;
-                std::cout << "mypop >> ";
-                std::cin >> hostname;
-                std::cout << "[INFO] Please enter your username. (e.g. test02122010)" << std::endl;
-                std::cout << "mypop >> ";
-                std::cin >> username;
-                getchar();
-                std::cout << "[INFO] Please enter your password." << std::endl;
-                std::cout << "mypop >> ";
-                getPassword();
-
                 try
                 {
-                    Pop3Session pop3(hostname, __DEFAULT_PORT);
-                    res = pop3.authenticate(username, password);
+                    res = userAuthentication();
                 }
-                catch (Error &error)
+                catch(Error& e)
                 {
                     std::cout << "[ERROR] User authentication failed!" << std::endl;
                 }
+                
 
                 if (res)
                 {

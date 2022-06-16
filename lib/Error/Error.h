@@ -22,7 +22,7 @@
  */
 class Error : public std::exception
 {
-    protected:
+    public:
         std::string programName;
         std::string problem;
         std::string reason;
